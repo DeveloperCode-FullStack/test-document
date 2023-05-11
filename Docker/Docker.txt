@@ -1,0 +1,39 @@
+Instalar docker
+Invoke-WebRequest -Uri https://wslstorestorage.blob.core.windows.net/wslblob/wsl_update_x64.msi -OutFile "$env:TEMP\wsl_update_x64.msi"
+Start-Process msiexec.exe -Wait -ArgumentList '/I "$env:TEMP\wsl_update_x64.msi" /quiet /norestart'
+wsl --update
+
+Validar si esta funcionando
+docker run hello-world
+
+Installar openjdk
+docker pull openjdk:17-jdk-hotspot
+
+Crear primero:
+docker network create test-network
+
+docker run -d --name mysql-db --network test-network -e MYSQL_ROOT_PASSWORD=abcd mysql:latest
+172.17.0.2
+
+Ver base de datos
+docker exec -it mysql-db bash
+mysql -uroot -pabcd
+SHOW DATABASES;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
+| test_fullstack     |
++--------------------+
+
+Crear imagen
+docker build -t test-neoris . 
+
+Crear contenedor
+docker run -d --name container_neoris --network test-network -p 9000:9000 test-neoris
+docker run -d --name container_neoris -p 9000:9000 test-neoris
+
+
